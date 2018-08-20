@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        body {
+            background: rgb(171, 201, 211);
+        }
+        
+        #frame,
+        #frame1 {
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            background: rgb(237, 249, 253);
+            width: 400px;
+            height: 500px;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            position: absolute;
+        }
+        
+        #frame1 {
+            background-repeat: no-repeat;
+            display: none;
+        }
+        /*=======fix======*/
+        
+        #score-header,
+        #header-frame {
+            height: 20%;
+        }
+        
+        #score,
+        #input-frame {
+            height: 59%;
+        }
+        
+        #footer,
+        #search-frame {
+            height: 20%;
+        }
+        /*=======adjust======*/
+        
+        #header-adjust {
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            position: relative;
+        }
+        
+        #score-adjust,
+        #input-adjust {
+            border-radius: 10px;
+            background: white;
+            box-sizing: border-box;
+            padding: 10px;
+            width: 90%;
+            height: 90%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        
+        #search-adjust {
+            width: 90%;
+            height: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            position: relative;
+        }
+        /*=======details======*/
+        
+        #header-adjust h1 {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            font-size: 1.8em;
+        }
+        
+        #input-adjust>div {
+            display: flex;
+            justify-content: space-around;
+            height: 35px;
+        }
+        
+        #input-adjust span {
+            width: 30%;
+            margin: auto;
+            text-align: right;
+            font-size: 1.1em;
+        }
+        
+        #input-adjust input {
+            border-radius: 5px;
+            width: 65%;
+            height: 90%;
+            font-size: 1.1em;
+        }
+        
+        #verification {
+            /*包含验证码span,输入框,img*/
+            display: flex;
+        }
+        
+        #verification-area {
+            /*验证码输入框和图片*/
+            width: 65%;
+            overflow: visible;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        #verification-code {
+            /*=======验证码输入框==========*/
+            width: 35% !important;
+        }
+        
+        #verification-img {
+            /*=======验证码图片==========*/
+            width: 60%;
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+            overflow: visible;
+            background-size: 100% 100%;
+        }
+        
+        #text {
+            /*点击获取验证码文字*/
+            padding: 0;
+            margin: 0;
+        }
+        
+        #verification-img>p {
+            cursor: default;
+        }
+        
+        #search-button {
+            height: 100%;
+            width: 100%;
+            font-size: 1.5em;
+            font-weight: bold;
+            background-color: rgb(120, 86, 212);
+            color: white;
+            border: 0;
+            border-radius: 5px;
+        }
+        
+        #score-header>.score>span:hover,
+        #search-button:hover {
+            background: rgb(149, 126, 212);
+        }
+        
+        .score {
+            display: flex;
+        }
+        
+        .score span {
+            display: block;
+            width: 50%;
+            border-radius: 2px;
+        }
+        
+        #score-header {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        #score-header>.score {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        #score-header>.score span {
+            display: block;
+            color: white;
+            background-color: rgb(120, 86, 212);
+            font-size: 1em;
+            width: 40%;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        #footer {
+            text-align: center;
+            padding: 0;
+            margin: 0;
+            font-size: 0.8em;
+        }
+        
+        @media screen and (max-width: 600px) {
+            body {
+                background-color: lightblue;
+            }
+            ;
+            #frame,
+            #frame1 {
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                border-radius: 15px;
+                background: rgb(237, 249, 253);
+                box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+                /*
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            position: absolute;
+            */
+            }
+        }
+    </style>
+    <title>CET</title>
+</head>
+
+<body>
+    <div>
+        <div id="frame">
+            <div id="header-frame">
+                <div id="header-adjust">
+                    <h1 id="header-content">CET查分</h1>
+                </div>
+            </div>
+            <div id="input-frame">
+                <div id="input-adjust">
+                    <div>
+                        <span>准考证号 : </span>
+                        <input id="num" value="12345678" type="text" \>
+                    </div>
+                    <div>
+                        <span>姓名 : </span>
+                        <input id="name" value="12345678" type="text" \>
+                    </div>
+                    <div id="verification">
+                        <span>验证码 : </span>
+                        <div id="verification-area">
+                            <input value="bishoh" id="verification-code" type="text" \>
+                            <div id="verification-img">
+                                <p id="text">点击获取验证码</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="search-frame">
+                <div id="search-adjust">
+                    <button id="search-button">查询</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="frame1">
+        <div id="score-header">
+
+        </div>
+        <div id="score">
+            <div id="score-adjust">
+
+            </div>
+        </div>
+        <div id="footer">
+            <h3>---power by </h3>
+            <h3>广药校团委网络中心</h3>
+        </div>
+    </div>
+    <script>
+        var searchButton = document.getElementById("search-button");
+        var img = document.getElementById("verification-img");
+        var frame = document.getElementById("frame");
+        var frame1 = document.getElementById("frame1");
+        var headerContent = document.getElementById("header-content");
+        var scoreAdjust = document.getElementById("score-adjust");
+        var scoreHeader = document.getElementById("score-header");
+
+
+
+        function error(param) {
+            headerContent.innerHTML = param;
+            setTimeout(function() {
+                headerContent.innerHTML = "CET查分";
+            }, 5000);
+        }
+
+
+        function checkClick() {
+            function clickerror() {
+                error("请勿频繁点击！稍后数秒");
+            }
+            img.removeEventListener("click", getimg);
+            img.addEventListener("click", clickerror);
+            setTimeout(function() {
+                img.addEventListener("click", getimg);
+                img.removeEventListener("click", clickerror);
+                headerContent.innerHTML = "CET查分";
+            }, 5000);
+        };
+
+
+        img.addEventListener("click", getimg);
+        searchButton.addEventListener("click", getscore);
+
+
+
+
+        function getimg() {
+            checkClick();
+            document.getElementById("text").style.visibility = "hidden";
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "http://192.168.31.121:8080" + "/check");
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.status == 200) {
+                    if (xhr.readyState == 4) {
+                        /*set session storage*/
+                        sessionStorage.setItem("token", xhr.responseText);
+                        var token = xhr.responseText;
+                        var imgURL = "http://192.168.31.121:8080/static/" + token;
+                        var verificationImg = document.getElementById("verification-img");
+                        verificationImg.style.backgroundImage = "url(" + imgURL + ")";
+                        console.log(token);
+                    }
+                } else {
+                    console.log(xhr.status + " : " + xhr.readyState);
+                }
+            }
+        }
+
+
+        function showscore(obj) {
+            headerContent.innerHTML = "查询成功!";
+            /*防止多次插入*/
+            frame1.style.display = "block";
+            //frame.style.display = "none";
+
+            scoreAdjust.innerHTML = `<div class="score">
+                    <span>科目</span>
+                    <span>成绩</span>
+                </div>
+                <hr style="margin:0;width:80%;margin:0 auto;border: 0;height: 0;border-top: 1px solid rgba(0, 0, 0, 0.1);border-bottom: 1px solid rgba(255, 255, 255, 0.3);">
+            `;
+            var arr = [];
+            for (var i in obj) {
+                arr.push(i);
+            }
+
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] == "姓名") {
+                    var tempname = obj[arr[i]];
+                    continue;
+                }
+                if (arr[i] == "准考证号") {
+                    var tempnumber = obj[arr[i]];
+                    continue;
+                }
+                if (arr[i] == "学校") {
+                    window.school == obj[arr[i]];
+                    continue;
+                }
+                var Insert_Score = `<div class="score"> 
+                <span>${arr[i]}</span>  
+                <span>${obj[arr[i]]}</span>
+            </div>
+        `;
+                scoreHeader.innerHTML = `<div class="score">
+                <span>${tempname}</span>
+                <span>${tempnumber}</span>
+            </div>
+            `;
+                scoreAdjust.innerHTML += Insert_Score;
+            }
+            console.log(tempname);
+            console.log(tempnumber);
+        }
+
+
+
+
+
+
+
+
+        function calWidthAndHeight() {
+            var cH = document.documentElement.clientHeight || document.body.clientHeight;
+            var cW = document.documentElement.clientWidth || document.body.clientWidth
+            console.log(cH, cW);
+            if (cW < 600) {
+                frame1.style.width = cW * 0.95 + "px";
+                frame1.style.height = cH * 0.95 + "px";
+                frame.style.width = cW * 0.95 + "px";
+                frame.style.height = cH * 0.95 + "px";
+            }
+
+        }
+        calWidthAndHeight();
+
+
+
+        function getscore() {
+            var token = sessionStorage.getItem("token");
+            console.log(token);
+            var num = document.getElementById("num").value;
+            var name = document.getElementById("name").value;
+            var code = document.getElementById("verification-code").value;
+            /*检查参数*/
+            if (num == '' || name == '' || code == '') {
+                console.log(num, name, code);
+                error("请输入完整信息");
+                return;
+            } else if (isNaN(num)) {
+                error("准考证号请填写数字");
+                return;
+            }
+
+            var xhr = new XMLHttpRequest();
+            //xhr.open("POST", "http://192.168.31.121:8080/sub/");
+            xhr.open("POST", "./CET.php");
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            var data = "num=" + num + "&name=" + name + "&code=" + code + "&token=" + token;
+            xhr.dataType
+            xhr.send(data);
+            xhr.onreadystatechange = function() {
+                headerContent.innerHTML = "请稍等...";
+                if (xhr.status == 200) {
+                    if (xhr.readyState == 4) {
+                        console.log("success");
+                        var data = JSON.parse(xhr.responseText);
+                        switch (data.code) {
+                            case "2332":
+                                showscore(data.data);
+                                break;
+                            case "2333":
+                            default:
+                                error(data.error);
+                                break;
+                        }
+                    }
+                } else {
+                    error("查询失败:" + xhr.status + " : " + xhr.readyState);
+                }
+            }
+        }
+    </script>
+</body>
+
+
+</html>
