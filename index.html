@@ -275,7 +275,7 @@
             clearTimeout(MYSetTimeout);
             MYSetTimeout = setTimeout(function() {
                 error("CET查分");
-            }, 5000);
+            }, 2000);
         }
 
         function checkClick() {
@@ -286,11 +286,13 @@
             }
             img.removeEventListener("click", getimg);
             img.addEventListener("click", clickerror);
-            MYSetTimeout = setTimeout(function() {
+            var MYSetTimeout = setTimeout(function() {
                 img.addEventListener("click", getimg);
                 img.removeEventListener("click", clickerror);
-            }, 5000);
+            }, 2000);
         };
+
+
 
         img.addEventListener("click", getimg);
         searchButton.addEventListener("click", getscore);
@@ -304,7 +306,7 @@
                 xhr = new ActiveXObject("Microsoft.XMLHTTP");
             }
 
-            xhr.open("GET", "http://192.168.31.121:8080" + "/check");
+            xhr.open("GET", "https://cet.sweetxxin.top" + "/check");
             xhr.send();
             xhr.onreadystatechange = function() {
                 if (xhr.status == 200) {
@@ -312,7 +314,7 @@
                         /*set session storage*/
                         sessionStorage.setItem("token", xhr.responseText);
                         var token = xhr.responseText;
-                        var imgURL = "http://192.168.31.121:8080/static/" + token;
+                        var imgURL = "https://cet.sweetxxin.top/static/" + token;
                         var verificationImg = document.getElementById("verification-img");
                         verificationImg.style.backgroundImage = "url(" + imgURL + ")";
                         console.log(token);
