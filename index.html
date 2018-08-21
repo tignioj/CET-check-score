@@ -135,7 +135,7 @@
             width: 35% !important;
         }
         
-        #verification-img {
+        #verification-img-div {
             /*=======验证码图片==========*/
             width: 60%;
             text-align: center;
@@ -145,8 +145,9 @@
             background-size: 100% 100%;
         }
         
-        #verification-img>p {
-            cursor: default;
+        #verification-img-div img {
+            width: 100%;
+            height: 100%;
         }
         
         #search-button {
@@ -220,18 +221,18 @@
                 <div id="input-adjust">
                     <div>
                         <span>准考证号 : </span>
-                        <input id="num" value="123451234512345" type="text" \>
+                        <input id="num" type="text" \>
                     </div>
                     <div>
                         <span>姓名 : </span>
-                        <input id="name" value="张三" type="text" \>
+                        <input id="name" type="text" \>
                     </div>
                     <div id="verification">
                         <span>验证码 : </span>
                         <div id="verification-area">
-                            <input value="bishoh" id="verification-code" type="text" \>
-                            <div id="verification-img">
-                                <p id="text">点击获取验证码</p>
+                            <input value="" id="verification-code" type="text" \>
+                            <div id="verification-img-div">
+                                <img id="verification-img" alt="验证码加载中.." src="" id="text">
                             </div>
                         </div>
                     </div>
@@ -261,7 +262,7 @@
     </div>
     <script>
         var searchButton = document.getElementById("search-button");
-        var img = document.getElementById("verification-img");
+        var img = document.getElementById("verification-img-div");
         var frame = document.getElementById("frame");
         var frame1 = document.getElementById("frame1");
         var headerContent = document.getElementById("header-content");
@@ -295,11 +296,12 @@
 
 
         img.addEventListener("click", getimg);
+
         searchButton.addEventListener("click", getscore);
 
         function getimg() {
             checkClick();
-            document.getElementById("text").style.visibility = "hidden";
+
             if (window.XMLHttpRequest) {
                 xhr = new XMLHttpRequest();
             } else {
@@ -316,7 +318,7 @@
                         var token = xhr.responseText;
                         var imgURL = "https://cet.sweetxxin.top/static/" + token;
                         var verificationImg = document.getElementById("verification-img");
-                        verificationImg.style.backgroundImage = "url(" + imgURL + ")";
+                        verificationImg.src = imgURL;
                         console.log(token);
                         console.log(imgURL);
                     }
@@ -433,6 +435,10 @@
                     error("查询失败:" + xhr.status + " : " + xhr.readyState);
                 }
             }
+        }
+
+        window.onload = function() {
+            getimg();
         }
     </script>
 </body>
