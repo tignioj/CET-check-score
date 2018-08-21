@@ -309,7 +309,7 @@
                 xhr = new ActiveXObject("Microsoft.XMLHTTP");
             }
 
-            xhr.open("GET", "https://cet.sweetxxin.top" + "/check");
+            xhr.open("GET", "https://cet.sweetxxin.top/check");
             xhr.send();
             xhr.onreadystatechange = function() {
                 if (xhr.status == 200) {
@@ -410,8 +410,8 @@
             } else {
                 xhr = new ActiveXObject("Microsoft.XMLHTTP");
             }
-            //xhr.open("POST", "http://192.168.31.121:8080/sub/");
-            xhr.open("POST", "./CET.php");
+
+            xhr.open("POST", "https://cet.sweetxxin.top/sub");
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             var data = "num=" + num + "&name=" + name + "&code=" + code + "&token=" + token;
             xhr.dataType
@@ -427,8 +427,13 @@
                                 showscore(data.data);
                                 break;
                             case "2333":
-                            default:
                                 error(data.error);
+                                break;
+                            case "2334":
+                                error(data.error);
+                                break;
+                            default:
+                                error("未知错误");
                                 break;
                         }
                     }
@@ -440,6 +445,7 @@
 
         window.onload = function() {
             getimg();
+            document.getElementById("num").focus();
         }
     </script>
 </body>
