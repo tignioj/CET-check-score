@@ -12,12 +12,11 @@
         
         #frame,
         #frame1 {
-            border: 1px solid rgba(0, 0, 0, 0.2);
             border-radius: 15px;
             background: rgb(237, 249, 253);
             width: 400px;
             height: 500px;
-            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
@@ -46,13 +45,35 @@
             height: 20%;
         }
         /*=======adjust======*/
+        /*about-center*/
         
-        #header-adjust {
+        #header-adjust,
+        #score-adjust,
+        #input-adjust,
+        #search-adjust {
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
             -webkit-transform: translate(-50%, -50%);
             position: relative;
+        }
+        /*----*/
+        /*other*/
+        
+        #header-adjust {
+            width: 100%;
+            height: 50%;
+        }
+        
+        #text,
+        #header-content {
+            text-align: center;
+            padding: 0;
+            margin: 0;
+        }
+        
+        #header-content {
+            font-size: 1.6em;
         }
         
         #score-adjust,
@@ -63,11 +84,6 @@
             padding: 10px;
             width: 90%;
             height: 90%;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            -webkit-transform: translate(-50%, -50%);
-            position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
@@ -76,20 +92,8 @@
         #search-adjust {
             width: 90%;
             height: 50%;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            -webkit-transform: translate(-50%, -50%);
-            position: relative;
         }
         /*=======details======*/
-        
-        #header-adjust h1 {
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            font-size: 1.8em;
-        }
         
         #input-adjust>div {
             display: flex;
@@ -109,6 +113,7 @@
             width: 65%;
             height: 90%;
             font-size: 1.1em;
+            border: 1px solid rgba(0, 0, 0, 0.2);
         }
         
         #verification {
@@ -134,16 +139,10 @@
             /*=======验证码图片==========*/
             width: 60%;
             text-align: center;
-            height: 50px;
-            line-height: 50px;
-            overflow: visible;
+            height: 70px;
+            line-height: 70px;
+            overflow: hidden;
             background-size: 100% 100%;
-        }
-        
-        #text {
-            /*点击获取验证码文字*/
-            padding: 0;
-            margin: 0;
         }
         
         #verification-img>p {
@@ -159,6 +158,9 @@
             color: white;
             border: 0;
             border-radius: 5px;
+            transition: background 0.5s;
+            -webkit-transition: background 0.5s;
+            /* Safari */
         }
         
         #score-header>.score>span:hover,
@@ -199,36 +201,14 @@
         
         #footer {
             text-align: center;
-            padding: 0;
-            margin: 0;
             font-size: 0.8em;
-        }
-        
-        @media screen and (max-width: 600px) {
-            body {
-                background-color: lightblue;
-            }
-            ;
-            #frame,
-            #frame1 {
-                border: 1px solid rgba(0, 0, 0, 0.2);
-                border-radius: 15px;
-                background: rgb(237, 249, 253);
-                box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-                /*
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            -webkit-transform: translate(-50%, -50%);
-            position: absolute;
-            */
-            }
         }
     </style>
     <title>CET</title>
 </head>
 
 <body>
+
     <div>
         <div id="frame">
             <div id="header-frame">
@@ -240,11 +220,11 @@
                 <div id="input-adjust">
                     <div>
                         <span>准考证号 : </span>
-                        <input id="num" value="12345678" type="text" \>
+                        <input id="num" value="123451234512345" type="text" \>
                     </div>
                     <div>
                         <span>姓名 : </span>
-                        <input id="name" value="12345678" type="text" \>
+                        <input id="name" value="张三" type="text" \>
                     </div>
                     <div id="verification">
                         <span>验证码 : </span>
@@ -288,40 +268,42 @@
         var scoreAdjust = document.getElementById("score-adjust");
         var scoreHeader = document.getElementById("score-header");
 
-
+        var MYSetTimeout;
 
         function error(param) {
             headerContent.innerHTML = param;
-            setTimeout(function() {
-                headerContent.innerHTML = "CET查分";
+            clearTimeout(MYSetTimeout);
+            MYSetTimeout = setTimeout(function() {
+                error("CET查分");
             }, 5000);
         }
 
-
         function checkClick() {
+            clearTimeout(MYSetTimeout);
+
             function clickerror() {
                 error("请勿频繁点击！稍后数秒");
             }
             img.removeEventListener("click", getimg);
             img.addEventListener("click", clickerror);
-            setTimeout(function() {
+            MYSetTimeout = setTimeout(function() {
                 img.addEventListener("click", getimg);
                 img.removeEventListener("click", clickerror);
-                headerContent.innerHTML = "CET查分";
             }, 5000);
         };
-
 
         img.addEventListener("click", getimg);
         searchButton.addEventListener("click", getscore);
 
-
-
-
         function getimg() {
             checkClick();
             document.getElementById("text").style.visibility = "hidden";
-            var xhr = new XMLHttpRequest();
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+
             xhr.open("GET", "http://192.168.31.121:8080" + "/check");
             xhr.send();
             xhr.onreadystatechange = function() {
@@ -334,26 +316,23 @@
                         var verificationImg = document.getElementById("verification-img");
                         verificationImg.style.backgroundImage = "url(" + imgURL + ")";
                         console.log(token);
+                        console.log(imgURL);
                     }
                 } else {
-                    console.log(xhr.status + " : " + xhr.readyState);
+                    error("验证码请求失败,稍后重试");
                 }
             }
         }
 
-
         function showscore(obj) {
-            headerContent.innerHTML = "查询成功!";
-            /*防止多次插入*/
             frame1.style.display = "block";
-            //frame.style.display = "none";
+            frame.style.display = "none";
 
-            scoreAdjust.innerHTML = `<div class="score">
-                    <span>科目</span>
-                    <span>成绩</span>
-                </div>
-                <hr style="margin:0;width:80%;margin:0 auto;border: 0;height: 0;border-top: 1px solid rgba(0, 0, 0, 0.1);border-bottom: 1px solid rgba(255, 255, 255, 0.3);">
-            `;
+            scoreAdjust.innerHTML = "<div class=\"score\">" +
+                "<span>科目</span>" +
+                "<span>成绩</span>" +
+                "</div>" +
+                "<hr style=\"margin:0;border-top: 0;\">";
             var arr = [];
             for (var i in obj) {
                 arr.push(i);
@@ -369,47 +348,35 @@
                     continue;
                 }
                 if (arr[i] == "学校") {
-                    window.school == obj[arr[i]];
                     continue;
                 }
-                var Insert_Score = `<div class="score"> 
-                <span>${arr[i]}</span>  
-                <span>${obj[arr[i]]}</span>
-            </div>
-        `;
-                scoreHeader.innerHTML = `<div class="score">
-                <span>${tempname}</span>
-                <span>${tempnumber}</span>
-            </div>
-            `;
+                var Insert_Score = "<div class=\"score\">" +
+                    "<span>" + arr[i] + "</span>" +
+                    "<span>" + obj[arr[i]] + "</span>" +
+                    "</div>";
+                scoreHeader.innerHTML = "<div class=\"score\">" +
+                    "<span>" + tempname + "</span>" +
+                    "<span>" + tempnumber + "</span>" +
+                    "</div>";
                 scoreAdjust.innerHTML += Insert_Score;
             }
-            console.log(tempname);
-            console.log(tempnumber);
+
         }
-
-
-
-
-
-
-
 
         function calWidthAndHeight() {
             var cH = document.documentElement.clientHeight || document.body.clientHeight;
-            var cW = document.documentElement.clientWidth || document.body.clientWidth
+            var cW = document.documentElement.clientWidth || document.body.clientWidth;
             console.log(cH, cW);
             if (cW < 600) {
                 frame1.style.width = cW * 0.95 + "px";
-                frame1.style.height = cH * 0.95 + "px";
+                frame1.style.height = cH * 0.75 + "px";
                 frame.style.width = cW * 0.95 + "px";
-                frame.style.height = cH * 0.95 + "px";
+                frame.style.height = cH * 0.75 + "px";
             }
-
         }
+
+
         calWidthAndHeight();
-
-
 
         function getscore() {
             var token = sessionStorage.getItem("token");
@@ -422,12 +389,22 @@
                 console.log(num, name, code);
                 error("请输入完整信息");
                 return;
-            } else if (isNaN(num)) {
+            }
+            if (isNaN(num)) {
                 error("准考证号请填写数字");
                 return;
             }
+            if (num.length != 15) {
+                console.log(num.length);
+                error("请填写15位有效数字");
+                return;
+            }
 
-            var xhr = new XMLHttpRequest();
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
             //xhr.open("POST", "http://192.168.31.121:8080/sub/");
             xhr.open("POST", "./CET.php");
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -457,6 +434,5 @@
         }
     </script>
 </body>
-
 
 </html>
