@@ -309,7 +309,7 @@
                 xhr = new ActiveXObject("Microsoft.XMLHTTP");
             }
 
-            xhr.open("GET", "https://cet.sweetxxin.top/api/check/");
+            xhr.open("GET", "http://127.0.0.1:8080/check/");
             xhr.send();
             xhr.onreadystatechange = function() {
                 if (xhr.status == 200) {
@@ -317,7 +317,7 @@
                         /*set session storage*/
                         sessionStorage.setItem("token", xhr.responseText);
                         var token = xhr.responseText;
-                        var imgURL = "https://cet.sweetxxin.top/static/" + token;
+                        var imgURL = "http://127.0.0.1:8080/static/" + token;
                         var verificationImg = document.getElementById("verification-img");
                         verificationImg.src = imgURL;
                         console.log(token);
@@ -411,7 +411,7 @@
                 xhr = new ActiveXObject("Microsoft.XMLHTTP");
             }
 
-            xhr.open("POST", "https://cet.sweetxxin.top/api/sub");
+            xhr.open("POST", "http://127.0.0.1:8080/sub");
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             var data = "num=" + num + "&name=" + name + "&code=" + code + "&token=" + token;
             xhr.dataType
