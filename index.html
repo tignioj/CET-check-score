@@ -309,7 +309,7 @@
                 xhr = new ActiveXObject("Microsoft.XMLHTTP");
             }
 
-            xhr.open("GET", "https://cet.sweetxxin.top/check");
+            xhr.open("GET", "https://cet.sweetxxin.top/api/check/");
             xhr.send();
             xhr.onreadystatechange = function() {
                 if (xhr.status == 200) {
@@ -411,7 +411,7 @@
                 xhr = new ActiveXObject("Microsoft.XMLHTTP");
             }
 
-            xhr.open("POST", "https://cet.sweetxxin.top/sub");
+            xhr.open("POST", "https://cet.sweetxxin.top/api/sub");
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             var data = "num=" + num + "&name=" + name + "&code=" + code + "&token=" + token;
             xhr.dataType
